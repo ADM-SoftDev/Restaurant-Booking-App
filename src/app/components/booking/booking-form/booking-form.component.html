@@ -1,0 +1,35 @@
+<form class="form-table" [formGroup] = "bookingForm">
+    <h1>Realiza tu Reserva</h1>
+    <div>
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input type="text" formControlName="name" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Correo</mat-label>
+            <input type="email" formControlName="email" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Personas</mat-label>
+            <input type="number" formControlName="customers" matInput>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Turnos</mat-label>
+            <mat-select formControlName="time" disableRipple>
+                <mat-option *ngFor="let turnos of restaurant.turns" [value]="turnos.id">
+                    {{turnos.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>fecha Reserva</mat-label>
+            <input matInput [matDatepicker]="date" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="text-right">
+        <button (click)="sendBooking()" type="submit" mat-button color="primary" [disabled]="!bookingForm.valid">Enviar Reserva</button>
+        <button (click)="payBooking()" mat-button color="secundary" [disabled]="!bookingForm.valid">Pagar</button>
+    </div>
+</form>

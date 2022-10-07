@@ -1,0 +1,41 @@
+<div class = "container">
+<div class="row">
+    <div class="col-sm-12 col-md-4">
+        <mat-card class="card-theme">
+                <mat-card-title>Restaurante Grill</mat-card-title>
+                <mat-card-subtitle>Calle diego de Leon 32 - SSR</mat-card-subtitle>
+            <img mat-card-image class="image-card" src="https://res.cloudinary.com/tf-lab/image/upload/w_1200,h_674,c_fill,g_auto:subject,q_auto,f_auto/restaurant/fc3035c7-00cf-4e92-8bab-4c895933b98d/7394b1df-33e7-4f55-9098-a44dd3b9a2e4.jpg" alt="Restaurante">
+            <mat-card-content>
+                Especialidad de comida Española - Peruana
+                <mat-card-header>
+                    <mat-card-subtitle>Horarios: 10:00 - 14:00 y 17:00 - 22:00</mat-card-subtitle>
+                    <mat-card-subtitle>Reservas: 695-852-147</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button>RESERVAR</button>
+                <button mat-button>LIKE</button>
+                <button mat-button>SHARE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div class="col-sm-12 col-md-4" *ngFor="let restaurant of restaurante">
+        <mat-card class="card-theme">
+                <mat-card-title>{{restaurant.name}}</mat-card-title>
+            <img mat-card-image class="image-card" src={{restaurant.image}} alt="Restaurante">
+            <mat-card-content>
+                <mat-card-subtitle>{{restaurant.description}}</mat-card-subtitle>.
+                <mat-card-header>
+                    <mat-card-subtitle>Horarios: 09:00 - 16:00 y 20:00- 00:00</mat-card-subtitle>
+                    <mat-card-subtitle>Central de Reservas: 695-852-147</mat-card-subtitle>
+                </mat-card-header>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button [routerLink]="['booking',restaurant.id_restaurante]">RESERVAR</button>
+                <button mat-button>LIKE</button>
+                <button mat-button>SHARE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+</div>

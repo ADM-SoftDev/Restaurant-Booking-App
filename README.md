@@ -24,4 +24,21 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Further help
 
+COMANDOS INSTALACION:
+ng add @angular/material (ANGULAR MATERIAL)
+ng add @ng-bootstrap/ng-bootstrap (BOOTSTRAP)
+npm install moment --save  install momment
+ng add @angular/localize (BOOTSTRAP)
+nom i boostrap (añadir estilos)
+
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+COMANDOS TS
+-------------------------------------------------------------------------------------------------------------------------------------------------
+COMPILAR TS:>tsc xxxx.ts
+INICIALIZAR CONFIGURACION: > tsc --init
+COMPILAR SIN FICHEROS ERROR: > tsc --noEmitOnError xxxx.ts
+COMPILAR set/get : > tsc --target ES5 --noEmitOnError xxxx.ts
+EJECUTAR FICHERO: node xxxx.js
+LIMPIAR FICHERO: > tsc --build --clean

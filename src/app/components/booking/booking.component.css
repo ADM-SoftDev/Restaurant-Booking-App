@@ -1,0 +1,24 @@
+.restauranteImage{
+    height: 70vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.restauranteBackground{
+    height: 95%;
+    background-size: cover;
+    background-position: center;
+    min-height: 630px;
+    width: 100%;
+    background-attachment: fixed;
+}
+
+.pTop50{
+    padding-top: 50px;
+}
+
+@media only screen and (max-width: 767px) {
+    .container{ overflow: auto;}
+    .restauranteBackground { height: 180%;}
+}

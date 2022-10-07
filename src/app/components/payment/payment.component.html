@@ -1,0 +1,175 @@
+<mat-card class="form-card"  style="margin: 25px">
+    <mat-stepper class="payment-stepper" [orientation]="(stepperOrientation | async)!">
+        <mat-step  label="Datos del Pago" [editable]="false">
+            <mat-card-title
+            style="margin-top: -16px; margin-left: -16px; margin-right: -16px; margin-bottom: 32px;">
+                <mat-toolbar color="primary"
+                style=" border-top-right-radius: 4px; border-top-left-radius: 4px;">
+                {{titles_cargoTarjeta}}
+                </mat-toolbar>
+            </mat-card-title>
+            <form novalidate (ngSubmit)="pagarTarjeta()" [formGroup]="paymentBuy">
+
+                <div>{{datos_Cliente}}</div>
+
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" type="email" />
+                    </mat-form-field>
+                </div>
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>Address</mat-label>
+                        <input matInput formControlName="address" />
+                    </mat-form-field>
+                </div>
+
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>ZIP Code</mat-label>
+                        <input matInput formControlName="zipcode" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city" />
+                    </mat-form-field>
+                </div>
+
+                <div style="margin-bottom: 10px"></div>
+                <ngx-stripe-card
+                    [options]="cardOptions"
+                    [elementsOptions]="elementsOptions"
+                ></ngx-stripe-card>
+
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <mat-form-field appearance="outline" style="flex: 1">
+                        <mat-label>Monto a Cargar</mat-label>
+                        <input matInput formControlName="amount" placeholder="0.50" />
+                        <span class="currency">USD</span>
+                    </mat-form-field>
+                </div>
+
+                <div style="text-align: right">
+                    <div style="margin-bottom: 40px"></div>
+                    <mat-divider></mat-divider>
+                    <div style="margin-bottom: 60px"></div>
+                    <div style="text-align: right">
+                        <button mat-stroked-button color="warn"  [disabled]="paying" (click)="clear()"
+                            style="margin-right: 16px"> CLEAR
+                        </button>
+
+                        <button  mat-raised-button  type="submit" mat-button matStepperNext color="primary" [disabled]="paying" >
+                            <span *ngIf="!paying">
+                                PAY <span *ngIf="amount">{{ amount | currency }}</span>
+                            </span>
+                            <span *ngIf="paying">PROCESSING...</span>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+
+        </mat-step>
+
+        <mat-step [stepControl]="resultadoFormGroup" label="Informacion del Pago" [editable]="false">
+
+            <div>
+            <!--   Esta parte pinta los Datos del Formulario Reserva
+                <h3>Nombre: {{booked.name}}  </h3>
+                <h3>Email: {{booked.email}}</h3>
+                <h3>Codigo de Reserva: {{booked.locator}}</h3>
+                <h3>Coste: {{booked.precio}}</h3>
+                <h3>Codigo de Fecha de Reserva: {{booked.fecha}}</h3>
+                <h3>Numero de Personas: {{booked.personas}}</h3>
+            -->
+
+                <!-- Esta parte pinta los datos del Formulario Payment-->
+                <h3>Nombre: {{paymentDatosFacturacion.nombre}}</h3>
+                <h3>Email: {{paymentDatosFacturacion.email}}</h3>
+                <h3>Direccion: {{paymentDatosFacturacion.direccion}}</h3>
+                <h3>Ciudad: {{paymentDatosFacturacion.ciudad}}</h3>
+                <h3>CP: {{paymentDatosFacturacion.cp}}</h3>
+                <h3>Precio: {{paymentDatosFacturacion.precio}}</h3>
+            </div>
+
+            <!-- Formulario en Angular Material que deberia de pintar los datos de Payment , pero no pinta los datos en la tabla-->
+            <form [formGroup]="resultadoFormGroup">
+                <h2>{{titles_Informacion}}</h2>
+
+                <div>{{datos_datosFacturacion}}</div>
+
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <mat-table class="payment-table mat-elevation-z8 table" [dataSource]="dataFacturacion">
+                        <ng-container matColumnDef="nombre">
+                            <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.get('nombre')}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef>Correo Electronico</mat-header-cell>
+                            <mat-cell  class="description-cell" *matCellDef="let element">{{paymentDatosFacturacion.email}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="direccion">
+                            <mat-header-cell *matHeaderCellDef>Direccion</mat-header-cell>
+                            <mat-cell class="description-cell" *matCellDef="let element">{{paymentDatosFacturacion.direccion}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ciudad">
+                            <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
+                            <mat-cell class="duration-cell"  *matCellDef="let element">{{paymentDatosFacturacion.ciudad}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="codigoPostal">
+                            <mat-header-cell *matHeaderCellDef>Codigo Postal</mat-header-cell>
+                            <mat-cell class="duration-cell2" *matCellDef="let element">{{paymentDatosFacturacion.cp}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="precio">
+                            <mat-header-cell *matHeaderCellDef>Cargo</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{paymentDatosFacturacion.precio}}</mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumnsPay"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsPay"></mat-row>
+                    </mat-table>
+                </div>
+
+                <hr/>
+                <!-- Formulario en Angular Material que deberia de pintar los datos de Reserva , pero no pinta los datos en la tabla-->
+                <div>{{datos_datosReserva}}</div>
+                <div style="display: flex; flex-direction: row; gap: 20px">
+                    <table mat-table [dataSource]="dataReserva" class="mat-elevation-z8 table">
+                        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                        <th mat-header-cell *matHeaderCellDef>
+                            {{column.header}}
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{column.cell(row)}}
+                        </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+
+                <div>
+                    <button mat-button (click)="cancel()" matStepperPrevious color="secundary">Cancelar</button>
+                    <button mat-button matStepperPrevious (click)="confirm()" matStepperNext color="primary" >Confirmar</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [editable]="false">
+            <ng-template matStepLabel>{{titles_confirmacion}}</ng-template>
+            <p>{{info}}</p>
+            <h1>{{successMessage}}</h1>
+        </mat-step>
+
+    </mat-stepper>
+</mat-card>
